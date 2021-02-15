@@ -1,9 +1,15 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import "./menu-item.styles.scss";
 
-const MenuItem = ({ title, imageUrl, size }) => {
+// WithRouter is a HOC that will give us access to router related things... such as location, match and history. not bad for 2 lines of code. 'History' has been added to the props of the MenuItem below;
+
+const MenuItem = ({ title, imageUrl, size, history, match, linkUrl }) => {
   return (
-    <div className={`${size} menu-item`}>
+    <div
+      className={`${size} menu-item`}
+      onClick={() => history.push(`${match.url}${linkUrl}`)}
+    >
       <div
         className="background-image"
         style={{ backgroundImage: `url(${imageUrl})` }}
@@ -16,4 +22,4 @@ const MenuItem = ({ title, imageUrl, size }) => {
     </div>
   );
 };
-export default MenuItem;
+export default withRouter(MenuItem);
