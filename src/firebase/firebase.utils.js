@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
-const firebaseConfig = {
+const config = {
   apiKey: "AIzaSyCCLUQJvp5zUjd00ySIMRQ2-ZLBREAQtAg",
   authDomain: "nove-ecommerce-db.firebaseapp.com",
   projectId: "nove-ecommerce-db",
@@ -11,8 +11,8 @@ const firebaseConfig = {
   appId: "1:815844685680:web:edd2ff1b54c25d19e281b5",
   measurementId: "G-KYC0737D8H",
 };
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+
+firebase.initializeApp(config);
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
@@ -22,7 +22,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const snapShot = await userRef.get();
 
   if (!snapShot.exists) {
-    const { displayName, email } = userAuth;
+    const { email, displayName } = userAuth;
+
     const createdAt = new Date();
     try {
       await userRef.set({
