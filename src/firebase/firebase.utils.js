@@ -21,20 +21,22 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   const snapShot = await userRef.get();
 
+  const { email, displayName } = userAuth;
   if (!snapShot.exists) {
-    const { email, displayName } = userAuth;
-
     const createdAt = new Date();
     try {
       await userRef.set({
         displayName,
         email,
-        createdAt,
-        ...additionalData,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
     } catch (error) {
       console.log("error creating user", error.message);
     }
+  } else if (!snapShot.data().displayName) {
+    await userRef.update({
+      displayName,
+    });
   }
 
   return userRef;
